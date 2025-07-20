@@ -11,7 +11,7 @@ const MAX_DISPLAY = 5
 export default function Home({ posts }) {
   return (
     <>
-      <div className="relative min-h-screen overflow-hidden">
+      <div className="pt64 container mx-auto flex min-h-screen flex-col justify-center px-12 pb-5 text-center">
         <Landing />
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           <div className="space-y-2 pt-6 pb-8 md:space-y-5">

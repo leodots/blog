@@ -176,3 +176,10 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+
+.typed-cursor {
+  font-weight: 800; /* Change the cursor font weight */
+  font-size: 2.25rem /* 36px */;
+  line-height: 2.5rem /* 40px */;
+  letter-spacing: -0.05em;
+}
