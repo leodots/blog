@@ -12,6 +12,9 @@ import {
   Medium,
   Bluesky,
 } from './icons'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const components = {
   mail: Mail,
@@ -26,6 +29,127 @@ const components = {
   instagram: Instagram,
   medium: Medium,
   bluesky: Bluesky,
+}
+
+type IconsBundleProps = {
+  kind: keyof typeof components | string
+  href?: string | undefined
+  size?: number
+  hover?: boolean
+  iconType?: 'linkButton' | 'link' | 'icon' | 'Link' | 'LinkButton'
+  variant?: 'link' | 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost'
+  className?: string
+  parentClassName?: string
+  target?: '_blank' | '_self' | '_parent' | '_top'
+  text?: string
+  strokeWidth?: number
+}
+const IconsBundle = ({
+  kind,
+  href,
+  size = 8,
+  iconType = 'link',
+  variant = 'outline',
+  className,
+  parentClassName,
+  hover = true,
+  target,
+  text,
+  strokeWidth,
+}: IconsBundleProps) => {
+  const SocialSvg = components[kind]
+
+  // check if kind already exists in the components object
+  if (kind in components === false) {
+    return null
+  }
+
+  if ((iconType === 'link' || iconType === 'Link' || iconType === 'LinkButton') && !href) {
+    return null
+  }
+
+  // if (!href || (kind === 'mail' && !/^mailto:\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(href)))
+  //   return (
+  //     <SocialSvg
+  //       className={`${hover ? 'hover:text-red-500 dark:hover:text-red-400' : ''} h-${size} w-${size}`}
+  //     />
+  //   )
+  // convert tailwind size to px
+
+  const combinedClass = cn(`${text ? 'mr-2' : ''}  h-${size} w-${size} text-inherit`, className)
+
+  const combinedParentClass = cn(
+    'flex items-center justify-center',
+    `${hover ? 'hover:text-sky-900 dark:hover:text-sky-900' : ''}`,
+    parentClassName
+  )
+
+  if (iconType === 'LinkButton' && href) {
+    return (
+      <Button
+        variant={variant}
+        size={!text ? 'icon' : 'default'}
+        className={combinedParentClass}
+        asChild
+      >
+        <Link href={href} target={target}>
+          <span className="sr-only">{kind}</span>
+          <SocialSvg className={combinedClass} strokeWidth={strokeWidth} />
+          {text}
+        </Link>
+      </Button>
+    )
+  }
+  if (iconType === 'Link' && href) {
+    return (
+      <Link href={href} className={combinedParentClass} target={target}>
+        <span className="sr-only">{kind}</span>
+        <SocialSvg className={combinedClass} strokeWidth={strokeWidth} />
+        {text}
+      </Link>
+    )
+  }
+
+  if (iconType === 'icon') {
+    return <SocialSvg className={cn(`h-${size} w-${size}`, className)} strokeWidth={strokeWidth} />
+  }
+
+  if (iconType === 'linkButton' && href) {
+    return (
+      <Button
+        variant={variant}
+        size={!text ? 'icon' : 'default'}
+        className={parentClassName}
+        asChild
+      >
+        <a
+          className={cn('text-sm transition', combinedParentClass)}
+          target={'_blank'}
+          rel="noopener noreferrer"
+          href={href}
+        >
+          <span className="sr-only">{kind}</span>
+          <SocialSvg className={combinedClass} strokeWidth={strokeWidth} />
+          {text}
+        </a>
+      </Button>
+    )
+  }
+
+  return (
+    <>
+      <a
+        className={cn('text-sm transition', combinedParentClass)}
+        target={'_blank'}
+        rel="noopener noreferrer"
+        href={href}
+      >
+        <span className="sr-only">{kind}</span>
+        <SocialSvg className={combinedClass} strokeWidth={strokeWidth} />
+        {text}
+      </a>
+    </>
+  )
 }
 
 type SocialIconProps = {
@@ -58,4 +182,4 @@ const SocialIcon = ({ kind, href, size = 8 }: SocialIconProps) => {
   )
 }
 
-export default SocialIcon
+export default IconsBundle

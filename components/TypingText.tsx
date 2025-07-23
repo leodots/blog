@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import Typed from 'typed.js'
+import IconsBundle from '@/components/social-icons'
+import siteMetadata from '@/data/siteMetadata'
 
 export default function TypingText() {
   const el = useRef(null)
@@ -27,9 +29,9 @@ export default function TypingText() {
   }, [])
 
   return (
-    <div className="text-primary text-primary mt-6 mb-8 text-center text-4xl font-extrabold tracking-tighter sm:text-6xl">
+    <div className="text-primary mt-6 mb-32 text-center text-4xl font-extrabold tracking-tighter sm:text-6xl">
       <ul id="typed-strings" className="hidden">
-        <li>Hi it's Léo!</li>
+        <li>Hi it's Leo!</li>
       </ul>
 
       <span ref={el} className="inline" />
@@ -40,6 +42,14 @@ export default function TypingText() {
       <p className="mx-auto max-w-lg font-normal tracking-normal text-gray-500 md:text-xl lg:text-lg xl:text-xl dark:text-gray-400">
         Also, it's my portfolio.
       </p>
+      <IconsBundle
+        kind="mail"
+        iconType="linkButton"
+        href={`mailto:${siteMetadata.email}`}
+        text="Say Hi!"
+        size={5}
+        parentClassName="font-normal tracking-normal w-32 mx-auto p-4 mt-3 text-gray-900 dark:text-gray-100"
+      />
     </div>
   )
 }
