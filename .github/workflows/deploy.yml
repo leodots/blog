@@ -65,5 +65,5 @@ jobs:
             podman image pull ghcr.io/leodots/blog:latest &&
             systemctl --user daemon-reexec &&
             systemctl --user daemon-reload &&
-            systemctl --user restart leodots-blog.container
+            systemctl --user restart leodots
           '
