@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -20,15 +21,13 @@ export default function Header() {
     <div>
       <header className="border-b px-4 py-3">
         <div className="flex justify-between items-center max-w-screen-lg mx-auto">
-          {/* Logo + nome */}
           <Link
             href="/"
             className="flex items-center space-x-2 text-xl font-bold"
           >
-            {/* Aqui você pode colocar um ícone futuramente */}
+            <Image src="/logo.svg" alt="Logo" width={32} height={32} />
             <span>leodots</span>
           </Link>
-
           <div className="flex items-center gap-4">
             <div className="hidden sm:block">
               <NavigationMenu>
