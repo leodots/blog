@@ -2,10 +2,26 @@ name: Build, Push and Deploy
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  pull_request:
 
 jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+
+      - run: yarn install
+      - run: yarn build
+
   build-and-push:
+    needs: build-check
     runs-on: ubuntu-latest
 
     permissions:
@@ -43,12 +59,11 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy via SSH
+      - name: Deploy via SSH using Quadlet
         run: |
           ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} '
-            cd ~/apps/leodots.dev &&
-            podman-compose down &&
-            podman image rm ghcr.io/leodots/blog:latest || true &&
-            podman-compose pull &&
-            podman-compose up -d
+            podman image pull ghcr.io/leodots/blog:latest &&
+            systemctl --user daemon-reexec &&
+            systemctl --user daemon-reload &&
+            systemctl --user restart leodots-blog.container
           '
