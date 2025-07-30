@@ -25,8 +25,8 @@ export default function Header() {
             href="/"
             className="flex items-center space-x-2 text-xl font-bold"
           >
-            <Image src="/logo.svg" alt="Logo" width={32} height={32} />
-            <span>leodots</span>
+            <Image src="/logo.svg" alt="Logo" width={40} height={40} />
+            {/* <span>leodots</span> */}
           </Link>
           <div className="flex items-center gap-4">
             <div className="hidden sm:block">

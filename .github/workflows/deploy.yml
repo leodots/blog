@@ -46,4 +46,4 @@ jobs:
       - name: Deploy via SSH
         run: |
           ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} \
-            'cd ~/apps/leodots.dev && podman rm -f leodots-blog || true && podman compose pull && podman compose up -d'
+            'cd ~/apps/leodots.dev && podman-compose down && podman-compose pull && podman-compose up -d'
