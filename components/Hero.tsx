@@ -49,6 +49,7 @@ export default function Hero() {
       <p className="mx-auto max-w-lg text-gray-500 dark:text-gray-400 md:text-xl lg:text-lg xl:text-xl">
         Also, it&apos;s my portfolio.
       </p>
+      <p className="font-sans text-lg">Fonte teste</p>
     </div>
   );
 }
