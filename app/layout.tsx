@@ -9,7 +9,7 @@ const montSerrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Leo.",
+  title: "Leonardo.",
   description: "Leo's website",
   icons: {
     icon: "/favicon.svg",
