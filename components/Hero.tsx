@@ -41,7 +41,7 @@ export default function Hero() {
       </div>
       <p className="mx-auto mt-3 max-w-lg text-gray-500 dark:text-gray-400 md:text-xl lg:text-lg xl:text-xl">
         Welcome to my over-engineered personal blog where I write about software
-        engineering, productivity, and other stupid stuff.
+        engineering, productivity, and other stupid stuff that I like.
       </p>
       <p className="mx-auto max-w-lg text-gray-500 dark:text-gray-400 md:text-xl lg:text-lg xl:text-xl">
         Also, it&apos;s my portfolio.
