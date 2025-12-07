@@ -67,8 +67,9 @@ jobs:
             echo "📂 Navigating to blog directory..."
             cd ~/apps/leodots.dev
             
-            echo "🛑 Stopping old container..."
-            docker compose down blog || true
+            echo "🛑 Force stopping and removing old container..."
+            docker stop leodots-blog 2>/dev/null || true
+            docker rm -f leodots-blog 2>/dev/null || true
             
             echo "⬇️  Pulling new image..."
             docker compose pull blog
