@@ -62,28 +62,35 @@ jobs:
       - name: Deploy via SSH using Docker Compose
         run: |
           ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} << 'ENDSSH'
-            set -e  # Exit on error
+            set -e
             
             echo "📂 Navigating to blog directory..."
             cd ~/apps/leodots.dev
             
-            echo "🛑 Force stopping and removing old container..."
-            docker stop leodots-blog 2>/dev/null || true
-            docker rm -f leodots-blog 2>/dev/null || true
-            
             echo "⬇️  Pulling new image..."
             docker compose pull blog
             
+            echo "🔍 Checking for containers hogging port 3000..."
+            # Encontra o ID do container usando a porta 3000 e mata ele à força
+            # Isso resolve o problema de containers com nomes diferentes (leodots vs leodots-blog)
+            OLD_CONTAINER_ID=$(docker ps -q --filter "publish=3000")
+            if [ ! -z "$OLD_CONTAINER_ID" ]; then
+              echo "🛑 Killing old container on port 3000 (ID: $OLD_CONTAINER_ID)..."
+              docker rm -f $OLD_CONTAINER_ID
+            fi
+            
+            # Remove explicitamente o container pelo nome esperado também, por garantia
+            docker rm -f leodots-blog 2>/dev/null || true
+
             echo "🚀 Starting new container..."
-            docker compose up -d blog
+            # --force-recreate garante que ele recrie o container com a nova imagem
+            # --remove-orphans limpa containers definidos no compose que não são mais usados
+            docker compose up -d --force-recreate --remove-orphans blog
             
             echo "✅ Deployment completed!"
             
             echo "🧹 Cleaning up old images..."
             docker image prune -af --filter "until=24h"
-            
-            echo "📊 Container status:"
-            docker compose ps blog
           ENDSSH
 
       - name: Health check
