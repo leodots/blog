@@ -119,4 +119,53 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+
+  /* Prose styles for MDX content */
+  .prose h1 {
+    @apply text-3xl font-bold mb-4 text-gray-900;
+  }
+
+  .prose h1 a {
+    @apply text-gray-900 no-underline;
+  }
+
+  .prose h2 {
+    @apply text-xl font-bold mt-6 mb-3 scroll-mt-24 text-gray-900;
+  }
+
+  .prose h2 a {
+    @apply text-gray-900 no-underline;
+  }
+
+  .prose h3 {
+    @apply text-lg font-semibold mt-4 mb-2 text-gray-900;
+  }
+
+  .prose h3 a {
+    @apply text-gray-900 no-underline;
+  }
+
+  .prose p {
+    @apply mb-3 text-base text-gray-700 leading-relaxed;
+  }
+
+  .prose ul {
+    @apply list-disc pl-6 mb-3 space-y-1;
+  }
+
+  .prose li {
+    @apply text-base text-gray-700;
+  }
+
+  .prose a {
+    @apply text-blue-600 hover:text-blue-800 hover:underline;
+  }
+
+  .prose strong {
+    @apply font-semibold text-gray-900;
+  }
+
+  .prose hr {
+    @apply my-8 border-gray-300;
+  }
 }
