@@ -64,21 +64,21 @@ jobs:
         ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} << 'ENDSSH'
           set -e  # Para se houver erro
           
-          echo "📂 Navegando para diretório do blog..."
+          echo "📂 Heading to your blog folder..."
           cd ~/apps/leodots.dev  # ou o caminho onde está seu docker-compose.yml
           
-          echo "⬇️  Pulling nova imagem..."
+          echo "⬇️  Pulling new image..."
           docker compose pull blog
           
-          echo "🔄 Recriando container com nova imagem..."
+          echo "🔄 Recreating container with new image..."
           docker compose up -d --force-recreate blog
           
-          echo "✅ Deploy concluído!"
+          echo "✅ Deploy successful!"
           
-          echo "🧹 Limpando imagens antigas..."
+          echo "🧹 Cleaning old images..."
           docker image prune -af --filter "until=24h"
           
-          echo "📊 Status do container:"
+          echo "📊 Container status:"
           docker compose ps blog
         ENDSSH
 
