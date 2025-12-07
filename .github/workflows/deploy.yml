@@ -65,7 +65,7 @@ jobs:
             set -e  # Exit on error
             
             echo "📂 Navigating to blog directory..."
-            cd ~/blog
+            cd ~/apps/leodots.dev
             
             echo "🛑 Stopping old container..."
             docker compose down blog || true
