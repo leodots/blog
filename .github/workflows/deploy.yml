@@ -48,22 +48,50 @@ jobs:
           docker push ghcr.io/${{ github.repository }}:latest
 
   deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
+  needs: build-and-push
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+  steps:
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy via SSH using Docker
-        run: |
-          ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} '
-            docker image pull ghcr.io/leodots/blog:latest &&
-            systemctl --user daemon-reexec &&
-            systemctl --user daemon-reload &&
-            systemctl --user restart leodots
-          '
+    - name: Deploy via SSH using Docker Compose
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} << 'ENDSSH'
+          set -e  # Para se houver erro
+          
+          echo "📂 Navegando para diretório do blog..."
+          cd ~/apps/leodots.dev  # ou o caminho onde está seu docker-compose.yml
+          
+          echo "⬇️  Pulling nova imagem..."
+          docker compose pull blog
+          
+          echo "🔄 Recriando container com nova imagem..."
+          docker compose up -d --force-recreate blog
+          
+          echo "✅ Deploy concluído!"
+          
+          echo "🧹 Limpando imagens antigas..."
+          docker image prune -af --filter "until=24h"
+          
+          echo "📊 Status do container:"
+          docker compose ps blog
+        ENDSSH
+
+    - name: Health check
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} '
+          sleep 5
+          if docker ps | grep -q leodots-blog; then
+            echo "✅ Container leodots-blog is running"
+            exit 0
+          else
+            echo "❌ Container failed to start"
+            docker logs leodots-blog --tail 50
+            exit 1
+          fi
+        '
