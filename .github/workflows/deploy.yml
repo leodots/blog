@@ -62,20 +62,23 @@ jobs:
       - name: Deploy via SSH using Docker Compose
         run: |
           ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.VPS_IP }} << 'ENDSSH'
-            set -e  # Para se houver erro
+            set -e  # Exit on error
             
-            echo "📂 Heading to your blog folder..."
-            cd ~/apps/leodots.dev  # ou o caminho onde está seu docker-compose.yml
+            echo "📂 Navigating to blog directory..."
+            cd ~/blog
+            
+            echo "🛑 Stopping old container..."
+            docker compose down blog || true
             
             echo "⬇️  Pulling new image..."
             docker compose pull blog
             
-            echo "🔄 Recreating container with new image..."
-            docker compose up -d --force-recreate blog
+            echo "🚀 Starting new container..."
+            docker compose up -d blog
             
-            echo "✅ Deploy successful!"
+            echo "✅ Deployment completed!"
             
-            echo "🧹 Cleaning old images..."
+            echo "🧹 Cleaning up old images..."
             docker image prune -af --filter "until=24h"
             
             echo "📊 Container status:"
@@ -88,6 +91,7 @@ jobs:
             sleep 5
             if docker ps | grep -q leodots-blog; then
               echo "✅ Container leodots-blog is running"
+              docker ps | grep leodots-blog
               exit 0
             else
               echo "❌ Container failed to start"
