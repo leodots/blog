@@ -2,14 +2,18 @@
 import { useEffect, useRef } from "react";
 import { ModelViewer } from "./model-viewer";
 import Typed from "typed.js";
+import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
+import Link from "next/link";
+import { siteMetadata } from "@/data/siteMetadata";
 
 function createTypedInstance(el: HTMLElement) {
   return new Typed(el, {
-    stringsElement: '#bios',
+    stringsElement: "#bios",
     typeSpeed: 100,
     autoInsertCss: true,
-    cursorChar: '|', // specify the cursor character
-  })
+    cursorChar: "|", // specify the cursor character
+  });
 }
 
 export default function Hero() {
@@ -19,11 +23,10 @@ export default function Hero() {
   useEffect(() => {
     if (el.current) {
       typed.current = createTypedInstance(el.current);
-      //   typed.current.cursor = (<span className="">|</span>)
     }
     return () => {
-      typed.current?.destroy()
-    }
+      typed.current?.destroy();
+    };
   }, []);
 
   return (
@@ -42,6 +45,13 @@ export default function Hero() {
       <p className="mx-auto max-w-lg px-2 text-base text-gray-500 dark:text-gray-400 sm:text-lg md:text-xl">
         Also, it&apos;s my portfolio.
       </p>
+
+      <Button asChild size="lg" className="w-32 mx-auto mt-5">
+        <Link href={`mailto:${siteMetadata.email}`}>
+          <Mail className="mr-2" />
+          Say Hi!
+        </Link>
+      </Button>
     </div>
   );
 }
