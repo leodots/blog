@@ -1,6 +1,6 @@
 import { siteMetadata } from '@/data/siteMetadata'
 import Link from 'next/link'
-// import NowPlaying from '@/components/spotify/NowPlaying'
+import NowPlaying from '@/components/spotify/NowPlaying'
 import SocialIcon from '@/components/SocialIcon'
 import TechIcon from '@/components/TechIcon'
 import SectionContainer from '@/components/SectionContainer'
@@ -11,10 +11,7 @@ export default function Footer() {
       <SectionContainer>
         <div className="mb-0 flex flex-col justify-start space-y-3 py-10">
           <div className="flex flex-col items-center space-y-3 text-sm sm:flex-row sm:justify-between sm:text-base">
-            {/* <NowPlaying /> */}
-            <div className="flex items-center space-x-1">
-              <p>Now playing on spotify...</p>
-            </div>
+            <NowPlaying />
             <ul className="flex cursor-pointer items-center space-x-5">
               <li>
                 <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={5} />
