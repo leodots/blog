@@ -22,48 +22,52 @@ const MobileNav = () => {
     setOpen(isOpen)
   }, [])
 
+  // Filter visible nav items
+  const visibleNavItems = headerNavLinks.filter(item => item.href && !item.hidden)
+
   return (
     <Sheet open={open} onOpenChange={handleOpenChange} modal={false}>
       <SheetTrigger asChild>
         <Button
           variant="ghost"
           className="mx-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          aria-label={open ? 'Close menu' : 'Open menu'}
         >
-          <svg
-            strokeWidth="1.5"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-          >
-            <path
-              d="M3 5H11"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          {/* Animated hamburger icon */}
+          <div className="relative h-5 w-5">
+            <span
+              className={cn(
+                "absolute left-0 h-[2px] w-full bg-current rounded-full transition-all duration-300 ease-out",
+                open ? "top-[9px] rotate-45" : "top-1"
+              )}
             />
-            <path
-              d="M3 12H16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <span
+              className={cn(
+                "absolute left-0 top-[9px] h-[2px] bg-current rounded-full transition-all duration-300 ease-out",
+                open ? "w-0 opacity-0" : "w-3/4 opacity-100"
+              )}
             />
-            <path
-              d="M3 19H21"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <span
+              className={cn(
+                "absolute left-0 h-[2px] w-full bg-current rounded-full transition-all duration-300 ease-out",
+                open ? "top-[9px] -rotate-45" : "top-[17px]"
+              )}
             />
-          </svg>
+          </div>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 flex flex-col">
+      <SheetContent side="left" className="pr-0 flex flex-col" showCloseButton={false}>
         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-        <div className="px-6 py-6 border-b border-border/40">
+
+        {/* Logo section with animation */}
+        <div
+          className={cn(
+            "px-6 py-6 border-b border-border/40 transition-all duration-500 ease-out",
+            open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+          )}
+          style={{ transitionDelay: open ? '100ms' : '0ms' }}
+        >
           <div className="flex items-center gap-3">
             <Image
               src="/logo.svg"
@@ -75,28 +79,42 @@ const MobileNav = () => {
             <span className="font-bold text-xl">Leo.</span>
           </div>
         </div>
+
+        {/* Navigation with staggered animation */}
         <nav className="flex-1 overflow-y-auto py-6">
           <div className="flex flex-col gap-1 px-3">
-            {headerNavLinks.map(
-              (item) =>
-                item.href &&
-                !item.hidden && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={handleOpenChange}
-                    className="flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
-                  >
-                    <span className="text-muted-foreground transition-colors group-hover:text-accent-foreground">
-                      {navIcons[item.href]}
-                    </span>
-                    <span>{item.title}</span>
-                  </MobileLink>
-                )
-            )}
+            {visibleNavItems.map((item, index) => (
+              <MobileLink
+                key={item.href}
+                href={item.href}
+                onOpenChange={handleOpenChange}
+                className={cn(
+                  "flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium",
+                  "transition-all duration-300 ease-out",
+                  "hover:bg-accent hover:text-accent-foreground active:scale-[0.98]",
+                  open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                )}
+                style={{
+                  transitionDelay: open ? `${150 + index * 50}ms` : '0ms'
+                }}
+              >
+                <span className="text-muted-foreground transition-colors group-hover:text-accent-foreground">
+                  {navIcons[item.href]}
+                </span>
+                <span>{item.title}</span>
+              </MobileLink>
+            ))}
           </div>
         </nav>
-        <div className="border-t border-border/40 px-6 py-4">
+
+        {/* Footer with animation */}
+        <div
+          className={cn(
+            "border-t border-border/40 px-6 py-4 transition-all duration-500 ease-out",
+            open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          )}
+          style={{ transitionDelay: open ? `${200 + visibleNavItems.length * 50}ms` : '0ms' }}
+        >
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} Leonardo Torres
           </p>
@@ -112,14 +130,16 @@ interface MobileLinkProps extends LinkProps {
   onOpenChange?: (open: boolean) => void
   children: React.ReactNode
   className?: string
+  style?: React.CSSProperties
 }
 
-function MobileLink({ href, onOpenChange, className, children, ...props }: MobileLinkProps) {
+function MobileLink({ href, onOpenChange, className, children, style, ...props }: MobileLinkProps) {
   return (
     <Link
       href={href}
       onClick={() => onOpenChange?.(false)}
       className={cn(className)}
+      style={style}
       {...props}
     >
       {children}
