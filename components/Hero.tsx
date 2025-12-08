@@ -30,7 +30,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="container mx-auto -mt-28 md:-mt-16 flex min-h-[100dvh] flex-col content-center justify-center px-6 py-5 text-center">
+    <div className="container mx-auto -mt-28 md:-mt-16 flex h-screen flex-col content-center justify-center px-6 py-5 text-center">
       <ModelViewer />
       <div className="text-4xl font-extrabold tracking-tighter text-primary sm:text-6xl">
         <ul id="bios" className="hidden">

@@ -6,7 +6,7 @@ import MobileNav from "./MobileNav";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 
 import {
@@ -20,23 +20,14 @@ import {
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const ticking = useRef(false);
 
   const changeBackground = useCallback(() => {
     setIsScrolled(window.scrollY > 10);
-    ticking.current = false;
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!ticking.current) {
-        requestAnimationFrame(changeBackground);
-        ticking.current = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("scroll", changeBackground, { passive: true });
+    return () => document.removeEventListener("scroll", changeBackground);
   }, [changeBackground]);
 
   return (
