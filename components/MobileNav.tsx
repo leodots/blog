@@ -63,7 +63,7 @@ const MobileNav = () => {
         </Button>
       </SheetTrigger>
 
-      <SheetContent side="left" className="flex flex-col border-r-0 pr-0" showCloseButton={false}>
+      <SheetContent side="left" className="flex flex-col pr-0" showCloseButton={false}>
         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 
         {/* Logo section with animation */}
