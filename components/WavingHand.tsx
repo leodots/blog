@@ -1,14 +1,17 @@
-import React from 'react';
-import Image from 'next/image';
+import Image from 'next/image'
 
-const WavingHand = (props: { className?: string }) => (
+interface WavingHandProps {
+  className?: string
+}
+
+const WavingHand = ({ className }: WavingHandProps) => (
   <Image
     src="/waving-hand.svg"
     alt="Waving Hand"
     width={28}
     height={28}
-    {...props}
+    className={className}
   />
-);
+)
 
-export default WavingHand;
+export default WavingHand

@@ -20,8 +20,8 @@ export default function ResumePage() {
     <ResumeLayout toc={<TableOfContents />}>
       <article>
         <header className="mb-6">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900">{resume.name}</h1>
-          <p className="text-lg text-gray-700">{resume.occupation}</p>
+          <h1 className="text-3xl font-bold mb-2">{resume.name}</h1>
+          <p className="text-lg text-muted-foreground">{resume.occupation}</p>
         </header>
 
         <MDXContent code={resume.body.code} />

@@ -1,7 +1,6 @@
 'use client'
 
 import { headerNavLinks } from '@/data/navLinks'
-import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useState, useCallback } from 'react'
 import Link, { LinkProps } from 'next/link'
@@ -116,14 +115,10 @@ interface MobileLinkProps extends LinkProps {
 }
 
 function MobileLink({ href, onOpenChange, className, children, ...props }: MobileLinkProps) {
-  const router = useRouter()
   return (
     <Link
       href={href}
-      onClick={() => {
-        router.push(href.toString())
-        onOpenChange?.(false)
-      }}
+      onClick={() => onOpenChange?.(false)}
       className={cn(className)}
       {...props}
     >
