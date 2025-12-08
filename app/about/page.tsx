@@ -1,8 +1,9 @@
 import Header from "@/components/Header";
 import SectionContainer from "@/components/SectionContainer";
 import { siteMetadata } from "@/data/siteMetadata";
-import { Github, Linkedin, Mail, Instagram, Hand } from "lucide-react";
+import { Github, Linkedin, Mail, Instagram } from "lucide-react";
 import Image from "next/image";
+import WavingHand from "@/components/WavingHand";
 
 export const metadata = {
   title: "About - Leo",
@@ -62,8 +63,8 @@ export default function AboutPage() {
             {/* Right Column */}
             <div className="md:w-2/3 mt-8 md:mt-0">
               <h1 className="text-3xl sm:text-3xl font-bold mb-4 text-center md:text-left">
-                Hi{" "}
-                <Hand className="inline-block w-8 h-8 ml-2 text-yellow-500" />,
+                Hi{""}
+                <WavingHand className="wave inline-block w-8 h-8 ml-2" />,
                 I&apos;m Leonardo Torres
               </h1>
               <div className="space-y-4">
