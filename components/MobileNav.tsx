@@ -57,16 +57,13 @@ const MobileNav = () => {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 flex flex-col" showCloseButton={false}>
+      <SheetContent side="left" className="pr-0 flex flex-col border-r-0" showCloseButton={false}>
         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 
         {/* Logo section with animation */}
         <div
-          className={cn(
-            "px-6 py-6 border-b border-border/40 transition-all duration-500 ease-out",
-            open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-          )}
-          style={{ transitionDelay: open ? '100ms' : '0ms' }}
+          className="menu-fade-in px-6 py-6 border-b border-border/40"
+          style={{ animationDelay: '50ms' }}
         >
           <div className="flex items-center gap-3">
             <Image
@@ -88,17 +85,10 @@ const MobileNav = () => {
                 key={item.href}
                 href={item.href}
                 onOpenChange={handleOpenChange}
-                className={cn(
-                  "flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium",
-                  "transition-all duration-300 ease-out",
-                  "hover:bg-accent hover:text-accent-foreground active:scale-[0.98]",
-                  open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                )}
-                style={{
-                  transitionDelay: open ? `${150 + index * 50}ms` : '0ms'
-                }}
+                className="menu-item-animate flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium hover:bg-accent hover:text-accent-foreground active:scale-[0.98] transition-colors"
+                style={{ animationDelay: `${100 + index * 60}ms` }}
               >
-                <span className="text-muted-foreground transition-colors group-hover:text-accent-foreground">
+                <span className="text-muted-foreground">
                   {navIcons[item.href]}
                 </span>
                 <span>{item.title}</span>
@@ -109,11 +99,8 @@ const MobileNav = () => {
 
         {/* Footer with animation */}
         <div
-          className={cn(
-            "border-t border-border/40 px-6 py-4 transition-all duration-500 ease-out",
-            open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          )}
-          style={{ transitionDelay: open ? `${200 + visibleNavItems.length * 50}ms` : '0ms' }}
+          className="menu-fade-up border-t border-border/40 px-6 py-4"
+          style={{ animationDelay: `${150 + visibleNavItems.length * 60}ms` }}
         >
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} Leonardo Torres
