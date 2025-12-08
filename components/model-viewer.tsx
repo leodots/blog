@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { useGLTF, useAnimations } from "@react-three/drei";
@@ -20,7 +20,6 @@ interface MaterialWithColor extends Material {
 export const Model: React.FC = () => {
   //   const { scene } = useGLTF('/impossible_triangle.glb')
   const mesh = useRef<Mesh>(null!);
-  // const gltf = useLoader(GLTFLoader, '/spheron.glb');
 
   const { scene, animations } = useGLTF("/spheron.glb");
   const { actions } = useAnimations(animations, mesh);
@@ -53,19 +52,6 @@ export const Model: React.FC = () => {
       }
     });
   }, [scene, color]);
-
-  const handlePointerOver = () => {
-    if (actions && actions.MorphBake) {
-      // actions.MorphBake.reset().play()
-      actions.MorphBake.play();
-    }
-  };
-
-  const handlePointerOut = () => {
-    if (actions && actions.MorphBake) {
-      actions.MorphBake.stop();
-    }
-  };
 
   return (
     <mesh

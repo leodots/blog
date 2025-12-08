@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { useTheme } from 'next-themes'
-import { useEffect, useState, useCallback } from 'react'
-import { LuMoon as Moon, LuSun as Sun } from 'react-icons/lu'
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import { useEffect, useState, useCallback } from "react";
+import { Moon, Sun } from "lucide-react";
 
 const ThemeSwitcher = () => {
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => setMounted(true), []);
 
   const toggleTheme = useCallback(() => {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-  }, [resolvedTheme, setTheme])
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  }, [resolvedTheme, setTheme]);
 
   return (
     <motion.button
@@ -29,13 +29,13 @@ const ThemeSwitcher = () => {
       whileHover={{ scale: 1.2 }}
       onClick={toggleTheme}
     >
-      {mounted && resolvedTheme === 'dark' ? (
+      {mounted && resolvedTheme === "dark" ? (
         <Sun className="h-5 w-5" />
       ) : (
         <Moon className="h-5 w-5" />
       )}
     </motion.button>
-  )
-}
+  );
+};
 
-export default ThemeSwitcher
+export default ThemeSwitcher;

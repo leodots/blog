@@ -5,15 +5,11 @@ import Typed from "typed.js";
 
 function createTypedInstance(el: HTMLElement) {
   return new Typed(el, {
-    stringsElement: "#bios",
+    stringsElement: '#bios',
     typeSpeed: 100,
     autoInsertCss: true,
-    cursorChar: "|", // specify the cursor character
-    // attr: 'text-4xl font-extrabold' , // specify additional HTML attributes
-    // backSpeed: 100,
-    // loop: true,
-    // backDelay: 1000,
-  });
+    cursorChar: '|', // specify the cursor character
+  })
 }
 
 export default function Hero() {
@@ -26,8 +22,8 @@ export default function Hero() {
       //   typed.current.cursor = (<span className="">|</span>)
     }
     return () => {
-      typed?.current?.destroy();
-    };
+      typed.current?.destroy()
+    }
   }, []);
 
   return (

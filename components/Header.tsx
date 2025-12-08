@@ -54,27 +54,21 @@ const Header = () => {
           <div className="flex items-center md:space-x-3">
             <NavigationMenu className="hidden md:flex">
               <NavigationMenuList>
-                {headerNavLinks.map(
-                  (link) =>
+                {headerNavLinks.map((link) => {
+                  const isActive =
+                    (pathname.startsWith(link.href) && link.href !== '/') ||
+                    pathname === link.href
+                  return (
                     !link.hidden && (
                       <NavigationMenuItem key={link.href}>
-                        <NavigationMenuLink
-                          asChild
-                          active={
-                            (pathname.startsWith(link.href) &&
-                              link.href !== "/") ||
-                            pathname === link.href
-                          }
-                        >
+                        <NavigationMenuLink asChild active={isActive}>
                           <Link
                             href={link.href}
                             className={cn(
                               navigationMenuTriggerStyle(),
-                              (pathname.startsWith(link.href) &&
-                                link.href !== "/") ||
-                                pathname === link.href
-                                ? "text-foreground"
-                                : "text-foreground/60"
+                              isActive
+                                ? 'text-foreground'
+                                : 'text-foreground/60'
                             )}
                           >
                             {link.title}
@@ -82,7 +76,8 @@ const Header = () => {
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )
-                )}
+                  )
+                })}
               </NavigationMenuList>
             </NavigationMenu>
 
