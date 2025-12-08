@@ -1,30 +1,46 @@
-import Link from "next/link";
-import Image from "next/image";
+'use client'
+
+import { headerNavLinks } from '@/data/navLinks'
+import Link from 'next/link'
+import MobileNav from './MobileNav'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
+import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import { useEffect, useState, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
+
 import {
   NavigationMenu,
-  NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { ModeToggle } from "./ModeToggle";
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
 
-export default function Header() {
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
+
+  const changeBackground = useCallback(() => {
+    setIsScrolled(window.scrollY > 10)
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('scroll', changeBackground, { passive: true })
+    return () => document.removeEventListener('scroll', changeBackground)
+  }, [changeBackground])
+
   return (
-    <div>
-      <header className="border-b px-4 py-3">
-        <div className="flex justify-between items-center max-w-screen-lg mx-auto">
-          <Link
-            href="/"
-            className="flex items-center space-x-2 text-xl font-bold"
-          >
+    <div className="fixed top-4 left-0 right-0 z-40 px-8">
+      <header
+        className={cn(
+          'mx-auto h-[60px] w-full max-w-[768px] rounded-3xl border border-border bg-card shadow-sm saturate-100 backdrop-blur-[4px] transition-all duration-200 header-lg:max-w-[1168px]',
+          isScrolled && 'border-transparent bg-background/80'
+        )}
+      >
+        <div className="flex h-[60px] w-full items-center justify-between px-4 header-md:px-8">
+        <div>
+          <Link href="/" className="flex items-center">
             <Image
               src="/logo.svg"
               alt="Logo"
@@ -34,90 +50,47 @@ export default function Header() {
               priority
             />
           </Link>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:block">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground"
+        </div>
+        <div className="flex items-center md:space-x-3">
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              {headerNavLinks.map(
+                (link) =>
+                  !link.hidden && (
+                    <NavigationMenuItem key={link.href}>
+                      <NavigationMenuLink
+                        asChild
+                        active={
+                          (pathname.startsWith(link.href) && link.href !== '/') ||
+                          pathname === link.href
+                        }
                       >
-                        Home
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                        <Link
+                          href={link.href}
+                          className={cn(
+                            navigationMenuTriggerStyle(),
+                            (pathname.startsWith(link.href) && link.href !== '/') ||
+                            pathname === link.href
+                              ? 'text-foreground'
+                              : 'text-foreground/60'
+                          )}
+                        >
+                          {link.title}
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  )
+              )}
+            </NavigationMenuList>
+          </NavigationMenu>
 
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/blog"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground"
-                      >
-                        Blog
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/projects"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground"
-                      >
-                        Projects
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/resume"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground"
-                      >
-                        Resume
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href="/about"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground"
-                      >
-                        About
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
-            <ModeToggle />
-            <div className="sm:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Menu className="h-6 w-6" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent title="Menu" side="left">
-                  <SheetTitle className="sr-only">Menu</SheetTitle>
-                  <nav className="flex flex-col gap-4 mt-6">
-                    <Link href="/home">Home</Link>
-                    <Link href="/blog">Blog</Link>
-                    <Link href="/projects">Projects</Link>
-                    <Link href="/resume">Resume</Link>
-                    <Link href="/about">About</Link>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
+          <ThemeSwitcher />
+          <MobileNav />
+        </div>
         </div>
       </header>
     </div>
-  );
+  )
 }
+
+export default Header

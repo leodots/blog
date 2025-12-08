@@ -22,13 +22,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${montSerrat.variable} antialiased`}>
+    <html lang="en" className="overflow-x-hidden scroll-smooth" suppressHydrationWarning>
+      <body className={`${montSerrat.variable} min-h-screen bg-background antialiased pt-20`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           {children}
         </ThemeProvider>

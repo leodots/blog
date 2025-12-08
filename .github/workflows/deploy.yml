@@ -68,24 +68,18 @@ jobs:
             cd ~/apps/leodots.dev
             
             echo "⬇️  Pulling new image..."
+            # Fazemos o pull ANTES de parar o container. 
+            # Assim o site continua no ar enquanto baixa a atualização.
             docker compose pull blog
             
-            echo "🔍 Checking for containers hogging port 3000..."
-            # Encontra o ID do container usando a porta 3000 e mata ele à força
-            # Isso resolve o problema de containers com nomes diferentes (leodots vs leodots-blog)
-            OLD_CONTAINER_ID=$(docker ps -q --filter "publish=3000")
-            if [ ! -z "$OLD_CONTAINER_ID" ]; then
-              echo "🛑 Killing old container on port 3000 (ID: $OLD_CONTAINER_ID)..."
-              docker rm -f $OLD_CONTAINER_ID
-            fi
-            
-            # Remove explicitamente o container pelo nome esperado também, por garantia
+            echo "🛑 Stopping old container..."
+            # O "|| true" garante que não quebre se o container não estiver rodando
+            docker stop leodots-blog 2>/dev/null || true
             docker rm -f leodots-blog 2>/dev/null || true
-
+            
             echo "🚀 Starting new container..."
-            # --force-recreate garante que ele recrie o container com a nova imagem
-            # --remove-orphans limpa containers definidos no compose que não são mais usados
-            docker compose up -d --force-recreate --remove-orphans blog
+            # Sobe o novo
+            docker compose up -d blog
             
             echo "✅ Deployment completed!"
             
