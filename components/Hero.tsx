@@ -31,19 +31,19 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="container mx-auto -mt-16 flex h-screen flex-col content-center justify-center px-4 py-5 text-center">
+    <div className="container mx-auto -mt-28 md:-mt-16 flex h-screen flex-col content-center justify-center px-6 py-5 text-center">
       <ModelViewer />
-      <div className=" text-4xl font-extrabold tracking-tighter text-primary sm:text-6xl">
+      <div className="text-4xl font-extrabold tracking-tighter text-primary sm:text-6xl">
         <ul id="bios" className="hidden">
           <li>Hi it&apos;s Leo!</li>
         </ul>
         <span ref={el} />
       </div>
-      <p className="mx-auto mt-3 max-w-lg text-gray-500 dark:text-gray-400 md:text-xl lg:text-lg xl:text-xl">
+      <p className="mx-auto mt-3 max-w-lg px-2 text-base text-gray-500 dark:text-gray-400 sm:text-lg md:text-xl">
         Welcome to my over-engineered personal blog where I write about software
         engineering, productivity, and other stupid stuff that I like.
       </p>
-      <p className="mx-auto max-w-lg text-gray-500 dark:text-gray-400 md:text-xl lg:text-lg xl:text-xl">
+      <p className="mx-auto max-w-lg px-2 text-base text-gray-500 dark:text-gray-400 sm:text-lg md:text-xl">
         Also, it&apos;s my portfolio.
       </p>
     </div>

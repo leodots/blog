@@ -120,6 +120,11 @@
     @apply bg-background text-foreground font-sans;
   }
 
+  /* Prevent layout shift when sheet/modal opens */
+  body {
+    scrollbar-gutter: stable;
+  }
+
   /* Prose styles for MDX content */
   .prose h1 {
     @apply text-3xl font-bold mb-4 text-gray-900;
