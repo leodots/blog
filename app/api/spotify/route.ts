@@ -3,6 +3,10 @@ import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+interface SpotifyArtist {
+  name: string
+}
+
 export async function GET() {
   const response = await getNowPlaying()
 
@@ -24,7 +28,7 @@ export async function GET() {
     return NextResponse.json({
       isPlaying: false,
       title: track.name,
-      artist: track.artists.map((artist: any) => artist.name).join(', '),
+      artist: track.artists.map((artist: SpotifyArtist) => artist.name).join(', '),
       album: track.album.name,
       albumImageUrl: track.album.images[0]?.url,
       songUrl: track.external_urls.spotify,
@@ -39,7 +43,7 @@ export async function GET() {
 
   const isPlaying = song.is_playing
   const title = song.item.name
-  const artist = song.item.artists.map((artist: any) => artist.name).join(', ')
+  const artist = song.item.artists.map((artist: SpotifyArtist) => artist.name).join(', ')
   const album = song.item.album.name
   const albumImageUrl = song.item.album.images[0]?.url
   const songUrl = song.item.external_urls.spotify
