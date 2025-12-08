@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 interface Heading {
   id: string
@@ -11,6 +11,7 @@ interface Heading {
 export default function TableOfContents() {
   const [headings, setHeadings] = useState<Heading[]>([])
   const [activeId, setActiveId] = useState('')
+  const ticking = useRef(false)
 
   useEffect(() => {
     const elements = document.querySelectorAll('h2, h3')
@@ -24,8 +25,12 @@ export default function TableOfContents() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
+          if (entry.isIntersecting && !ticking.current) {
+            ticking.current = true
+            requestAnimationFrame(() => {
+              setActiveId(entry.target.id)
+              ticking.current = false
+            })
           }
         })
       },
