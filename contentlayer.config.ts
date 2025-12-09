@@ -42,9 +42,29 @@ export const Project = defineDocumentType(() => ({
   },
 }));
 
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: "blog/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    tags: { type: "list", of: { type: "string" }, required: true },
+    image: { type: "string", required: false },
+    canonical: { type: "string", required: false },
+  },
+  computedFields: {
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.flattenedPath.replace("blog/", ""),
+    },
+  },
+}));
+
 export default makeSource({
   contentDirPath: "data",
-  documentTypes: [Resume, Project],
+  documentTypes: [Resume, Project, Post],
   mdx: {
     rehypePlugins: [
       rehypeSlug,

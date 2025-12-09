@@ -1,0 +1,100 @@
+---
+title: "Google's Rate Limiter - Guava: Implementing RabbitMQ Rate Limiting in a Spring Java Application"
+description: "Learn how to implement rate limiting for RabbitMQ message consumption using Google's Guava RateLimiter in a Spring Boot application"
+date: 2023-07-14
+tags:
+  - Java
+  - Spring Boot
+  - RabbitMQ
+  - Guava
+  - Rate Limiting
+canonical: "https://dev.to/leodots/googles-rate-limiter-guava-implementing-rabbitmq-rate-limiting-in-a-spring-java-application-2bp7"
+---
+
+Recently, I encountered this scenario and I think that would be a great idea to share this knowledge and also have this documented to whoever wants to use it in the future. Since RabbitMQ doesn't have a rate limit feature built-in, we can create our own.
+
+## What is our environment?
+
+Now we are using the following technologies:
+
+- Spring Boot
+- Maven
+- RabbitMQ
+- Java 11
+
+I am not going to specify the exact versions that I am using here since Guava and Spring can work in almost every version.
+
+## Scenario
+
+Let's suppose we have the following scenario: a client wants to send lots of data to queue all day long, well, for RabbitMQ this is pretty easy to handle and can afford this with no problems. But now, instead of only 1 client, we have 20 clients sending all this information to only 1 queue, and it gets worse, when consuming the queue we need to create a specific rate limiter because some clients can handle 10 tps, others only 2 tps, and so on…
+
+I am not get into every details of this problem because the main goal here is to tell how Guava works and how to use it. But in the future we can explain how we can create the dynamically queues and have different listeners to each client in the code, that is awesome to do and pretty helpful, but for now, let's continue…
+
+## How Guava works?
+
+First, let's explain what is Guava:
+
+Guava's RateLimiter is a utility class designed to control the rate at which events or actions occur. It provides a straightforward way to limit the rate of operations, such as message consumption from a queue, API calls, or any other action that requires rate limiting.
+
+The RateLimiter class uses a concept called a **"token bucket"** to regulate the rate. Think of the token bucket as a container that holds a fixed number of tokens. Each token represents the permission to perform a specific action. The tokens in the bucket are replenished over time according to the specified rate.
+
+When a consumer wants to perform an action, it needs to acquire a token from the token bucket. If a token is available, the consumer can proceed with the action. If no token is available, the consumer has to wait until a token becomes available based on the specified rate.
+
+## How to use it?
+
+The RateLimiter class provides different methods to create a rate limiter:
+
+- `RateLimiter.create(double permitsPerSecond)`: This method creates a rate limiter with a specified rate of permits (tokens) allowed per second. For example, if you set a rate of 10 permits per second, it means that the rate limiter allows 10 actions to be performed per second.
+
+- `RateLimiter.create(double permitsPerSecond, long warmupPeriod, TimeUnit unit)`: This method allows you to specify a warmup period during which the rate limiter gradually increases the rate from zero to the desired rate. This can be useful to handle bursty workloads more efficiently.
+
+Include the dependency in your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>32.1.1-jre</version>
+</dependency>
+```
+
+Then you need to create the RateLimiter object:
+
+```java
+double rateLimit = client.getTransactionPerSecond();
+
+// Create and store the RateLimiter for this client
+RateLimiter rateLimiter = RateLimiter.create(rateLimit);
+```
+
+To use the RateLimiter, you need to call the `acquire()` method before performing the action you want to rate limit. The `acquire()` method blocks the execution until a token becomes available, thereby controlling the rate of actions. Once a token is acquired, the action can proceed. The time taken to acquire a token depends on the specified rate and the number of tokens available in the token bucket.
+
+Here's an example of how it works:
+
+```java
+@Component
+public class MessageConsumer implements MessageListener {
+
+    @Autowired
+    private RateLimiterService rateLimiterService;
+
+    private final String clientId;
+
+    public MessageConsumer(String clientId) {
+        this.clientId = clientId;
+    }
+
+    @Override
+    public void onMessage(Message message) {
+        // Retrieve the RateLimiter for this client
+        RateLimiter rateLimiter = rateLimiterService.getRateLimiter(clientId);
+
+        // Acquire a token. This may wait if tokens are not currently available.
+        rateLimiter.acquire();
+
+        // Process the message action you want
+    }
+}
+```
+
+This way, we can set the TPS we want to each client, then if there are messages in the queue, the MessageListener will handle the message respecting the rate limit.
