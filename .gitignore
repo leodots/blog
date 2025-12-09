@@ -43,3 +43,6 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# npm
+package-lock.json

@@ -2,16 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+This project uses [Yarn](https://yarnpkg.com/) as the package manager.
+
+**1. Install dependencies:**
 
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+**2. Run the development server:**
+
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
