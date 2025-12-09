@@ -7,10 +7,11 @@ import Link, { LinkProps } from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import Image from 'next/image'
-import { Home, Briefcase, User, FileText } from 'lucide-react'
+import { Home, Briefcase, User, FileText, PenLine } from 'lucide-react'
 
 const navIcons: Record<string, React.ReactNode> = {
   '/': <Home className="h-5 w-5" />,
+  '/blog': <PenLine className="h-5 w-5" />,
   '/projects': <Briefcase className="h-5 w-5" />,
   '/about': <User className="h-5 w-5" />,
   '/resume': <FileText className="h-5 w-5" />,

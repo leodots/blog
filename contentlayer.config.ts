@@ -20,9 +20,51 @@ export const Resume = defineDocumentType(() => ({
   },
 }));
 
+export const Project = defineDocumentType(() => ({
+  name: "Project",
+  filePathPattern: "projects/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    tags: { type: "list", of: { type: "string" }, required: true },
+    image: { type: "string", required: false },
+    github: { type: "string", required: false },
+    demo: { type: "string", required: false },
+    featured: { type: "boolean", required: false, default: false },
+  },
+  computedFields: {
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.flattenedPath.replace("projects/", ""),
+    },
+  },
+}));
+
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: "blog/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    description: { type: "string", required: true },
+    date: { type: "date", required: true },
+    tags: { type: "list", of: { type: "string" }, required: true },
+    image: { type: "string", required: false },
+    canonical: { type: "string", required: false },
+  },
+  computedFields: {
+    slug: {
+      type: "string",
+      resolve: (doc) => doc._raw.flattenedPath.replace("blog/", ""),
+    },
+  },
+}));
+
 export default makeSource({
   contentDirPath: "data",
-  documentTypes: [Resume],
+  documentTypes: [Resume, Project, Post],
   mdx: {
     rehypePlugins: [
       rehypeSlug,
