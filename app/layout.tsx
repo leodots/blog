@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
+import Script from "next/script";
+
 const montSerrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -34,6 +36,13 @@ export default function RootLayout({
           <Header />
           <main className="flex-grow pt-20">{children}</main>
           <Footer />
+          {process.env.NODE_ENV === 'production' && (
+            <Script
+              src="https://umami.leodots.dev/script.js"
+              data-website-id="17a00389-820d-4753-86c5-2c28f6fe73d8"
+              strategy="afterInteractive"
+            />
+          )}
         </ThemeProvider>
       </body>
     </html>
