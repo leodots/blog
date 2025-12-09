@@ -38,10 +38,6 @@ export default function Footer() {
               <li>
                 <Link href="/">{siteMetadata.title}</Link>
               </li>
-              <li>{` • `}</li>
-              <li>
-                <SocialIcon kind="githubFork" href={siteMetadata.siteRepo} size={5} />
-              </li>
             </ul>
             <ul className="flex items-center space-x-2">
               <li className="text-muted-foreground">{`Powered by`}</li>
