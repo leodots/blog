@@ -1,9 +1,9 @@
-import { siteMetadata } from '@/data/siteMetadata'
-import Link from 'next/link'
-import NowPlaying from '@/components/spotify/NowPlaying'
-import SocialIcon from '@/components/SocialIcon'
-import TechIcon from '@/components/TechIcon'
-import SectionContainer from '@/components/SectionContainer'
+import { siteMetadata } from "@/data/siteMetadata";
+import Link from "next/link";
+import NowPlaying from "@/components/spotify/NowPlaying";
+import SocialIcon from "@/components/SocialIcon";
+import TechIcon from "@/components/TechIcon";
+import SectionContainer from "@/components/SectionContainer";
 
 export default function Footer() {
   return (
@@ -14,19 +14,35 @@ export default function Footer() {
             <NowPlaying />
             <ul className="flex cursor-pointer items-center space-x-5">
               <li>
-                <SocialIcon kind="linkedin" href={siteMetadata.linkedin} size={5} />
+                <SocialIcon
+                  kind="linkedin"
+                  href={siteMetadata.linkedin}
+                  size={5}
+                />
               </li>
               <li>
                 <SocialIcon kind="github" href={siteMetadata.github} size={5} />
               </li>
               <li>
-                <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={5} />
+                <SocialIcon
+                  kind="mail"
+                  href={`mailto:${siteMetadata.email}`}
+                  size={5}
+                />
               </li>
               <li>
-                <SocialIcon kind="spotify" href={siteMetadata.spotify} size={5} />
+                <SocialIcon
+                  kind="spotify"
+                  href={siteMetadata.spotify}
+                  size={5}
+                />
               </li>
               <li>
-                <SocialIcon kind="instagram" href={siteMetadata.instagram} size={5} />
+                <SocialIcon
+                  kind="instagram"
+                  href={siteMetadata.instagram}
+                  size={5}
+                />
               </li>
             </ul>
           </div>
@@ -38,6 +54,14 @@ export default function Footer() {
               <li>
                 <Link href="/">{siteMetadata.title}</Link>
               </li>
+              <li>{` • `}</li>
+              <li>
+                <SocialIcon
+                  kind="githubFork"
+                  href={siteMetadata.siteRepo}
+                  size={5}
+                />
+              </li>
             </ul>
             <ul className="flex items-center space-x-2">
               <li className="text-muted-foreground">{`Powered by`}</li>
@@ -45,21 +69,33 @@ export default function Footer() {
                 <TechIcon kind="nextjs" href="https://nextjs.org" size={5} />
               </li>
               <li>
-                <TechIcon kind="typescript" href="https://www.typescriptlang.org" size={5} />
+                <TechIcon
+                  kind="typescript"
+                  href="https://www.typescriptlang.org"
+                  size={5}
+                />
               </li>
               <li>
-                <TechIcon kind="tailwind" href="https://tailwindcss.com" size={5} />
+                <TechIcon
+                  kind="tailwind"
+                  href="https://tailwindcss.com"
+                  size={5}
+                />
               </li>
               <li>
                 <TechIcon kind="shadcn" href="https://ui.shadcn.com" size={5} />
               </li>
               <li>
-                <TechIcon kind="contentlayer" href="https://contentlayer.dev" size={5} />
+                <TechIcon
+                  kind="contentlayer"
+                  href="https://contentlayer.dev"
+                  size={5}
+                />
               </li>
             </ul>
           </div>
         </div>
       </SectionContainer>
     </footer>
-  )
+  );
 }

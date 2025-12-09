@@ -4,7 +4,7 @@ import {
   Mail,
   Music,
   Instagram,
-  GitBranch,
+  GitFork,
 } from "lucide-react";
 
 const components = {
@@ -13,7 +13,7 @@ const components = {
   linkedin: Linkedin,
   spotify: Music,
   instagram: Instagram,
-  githubFork: GitBranch,
+  githubFork: GitFork,
 };
 
 type SocialIconProps = {
@@ -46,9 +46,7 @@ const SocialIcon = ({ kind, href, size = 8 }: SocialIconProps) => {
       href={href}
     >
       <span className="sr-only">{kind}</span>
-      <SocialSvg
-        className={`${sizeMap[size]}`}
-      />
+      <SocialSvg className={`${sizeMap[size]}`} />
     </a>
   );
 };
