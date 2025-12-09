@@ -1,6 +1,6 @@
 import { allProjects } from "contentlayer/generated";
 import SectionContainer from "@/components/SectionContainer";
-import ProjectCard from "@/components/projects/ProjectCard";
+import ContentCard from "@/components/shared/ContentCard";
 
 export const metadata = {
   title: "Projects - Leo",
@@ -24,7 +24,15 @@ export default function ProjectsPage() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+            <ContentCard
+              key={project.slug}
+              href={`/projects/${project.slug}`}
+              title={project.title}
+              description={project.description}
+              date={project.date}
+              tags={project.tags}
+              badge={project.featured ? "Featured" : undefined}
+            />
           ))}
         </div>
       </div>

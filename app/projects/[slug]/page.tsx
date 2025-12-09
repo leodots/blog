@@ -1,10 +1,12 @@
 import { allProjects } from "contentlayer/generated";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft, Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink } from "lucide-react";
 import SectionContainer from "@/components/SectionContainer";
-import ProjectMDXContent from "@/components/projects/ProjectMDXContent";
+import MDXContent from "@/components/mdx/MDXContent";
+import BackLink from "@/components/shared/BackLink";
+import TagList from "@/components/shared/TagList";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/lib/formatDate";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -38,26 +40,16 @@ export default async function ProjectPage({ params }: PageProps) {
     notFound();
   }
 
-  const formattedDate = new Date(project.date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   return (
     <SectionContainer size="sm">
       <article className="py-8">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to projects
-        </Link>
+        <BackLink href="/projects" label="Back to projects" />
 
         <header className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <time className="text-sm text-muted-foreground">{formattedDate}</time>
+            <time className="text-sm text-muted-foreground">
+              {formatDate(project.date)}
+            </time>
             {project.featured && (
               <span className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
                 Featured
@@ -71,16 +63,7 @@ export default async function ProjectPage({ params }: PageProps) {
             {project.description}
           </p>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs px-2 py-1 rounded-md bg-secondary text-secondary-foreground"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          <TagList tags={project.tags} className="mb-6" />
 
           {(project.github || project.demo) && (
             <div className="flex gap-3">
@@ -104,7 +87,7 @@ export default async function ProjectPage({ params }: PageProps) {
           )}
         </header>
 
-        <ProjectMDXContent code={project.body.code} />
+        <MDXContent code={project.body.code} />
       </article>
     </SectionContainer>
   );

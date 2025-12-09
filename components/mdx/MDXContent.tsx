@@ -2,7 +2,7 @@
 
 import { useMDXComponent } from 'next-contentlayer2/hooks'
 
-interface ProjectMDXContentProps {
+interface MDXContentProps {
   code: string
 }
 
@@ -48,7 +48,7 @@ const components = {
   ),
 }
 
-export default function ProjectMDXContent({ code }: ProjectMDXContentProps) {
+export default function MDXContent({ code }: MDXContentProps) {
   const MDXComponent = useMDXComponent(code)
   return (
     <div className="prose prose-neutral dark:prose-invert max-w-none">

@@ -1,6 +1,6 @@
 import { allPosts } from "contentlayer/generated";
 import SectionContainer from "@/components/SectionContainer";
-import PostCard from "@/components/blog/PostCard";
+import ContentCard from "@/components/shared/ContentCard";
 
 export const metadata = {
   title: "Blog - Leo",
@@ -24,7 +24,15 @@ export default function BlogPage() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <ContentCard
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              title={post.title}
+              description={post.description}
+              date={post.date}
+              tags={post.tags}
+              dateStyle="long"
+            />
           ))}
         </div>
       </div>
