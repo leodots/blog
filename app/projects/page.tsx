@@ -1,4 +1,6 @@
+import { allProjects } from "contentlayer/generated";
 import SectionContainer from "@/components/SectionContainer";
+import ProjectCard from "@/components/projects/ProjectCard";
 
 export const metadata = {
   title: "Projects - Leo",
@@ -6,11 +8,25 @@ export const metadata = {
 };
 
 export default function ProjectsPage() {
+  const projects = allProjects.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
   return (
     <SectionContainer>
       <div className="py-8">
-        <h1 className="text-6xl font-bold mb-4">Projects</h1>
-        <p className="text-lg text-muted-foreground">Coming soon...</p>
+        <header className="mb-12">
+          <h1 className="text-5xl font-bold mb-4">Projects</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            A collection of projects I&apos;ve built throughout my career, from micro-frontend architectures to cloud-native platforms.
+          </p>
+        </header>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
       </div>
     </SectionContainer>
   );
