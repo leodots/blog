@@ -259,3 +259,16 @@
     transform: rotate(0deg);
   }
 }
+
+@layer base {
+  ::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    z-index: 1;
+  }
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    z-index: 9999;
+  }
+}
